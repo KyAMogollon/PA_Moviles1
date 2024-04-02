@@ -9,8 +9,6 @@ public class Pokeball : MonoBehaviour
     private float speed;
     private float throwSpeed;
 
-    private bool throwing, holding;
-
     private Vector3 newPosition;
     // Start is called before the first frame update
     void Start()
@@ -27,19 +25,18 @@ public class Pokeball : MonoBehaviour
             Vector3 mousePos = touch.position;
             Vector3 pos = Camera.main.ScreenToWorldPoint(mousePos);
 
-            //if (touch.phase == TouchPhase.Began)
-            //{
-            //    Ray ray = Camera.main.ScreenPointToRay(touch.position);
-            //    RaycastHit hit;
-            //    if (Physics.Raycast(ray, out hit, 100f))
-            //    {
-            //        if (hit.transform == transform)
-            //        {
-            //            holding = true;
-            //            transform.SetParent(null);
-            //        }
-            //    }
-            //}
+            if (touch.phase == TouchPhase.Began)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, 100f))
+                {
+                    if (hit.transform == transform)
+                    {
+                        transform.SetParent(null);
+                    }
+                }
+            }
             if (touch.phase == TouchPhase.Ended)
             {
                 if (lastMouseY < touch.position.y)
@@ -47,16 +44,16 @@ public class Pokeball : MonoBehaviour
                     ThrowBall(touch.position);
                 }
             }
-            if (touch.phase == TouchPhase.Moved)
-            {
-                Ray ray = Camera.main.ScreenPointToRay(touch.position);
-                RaycastHit hit;
-                Debug.Log("Hola");
-                if (Physics.Raycast(ray, out hit, 100f))
-                {
-                    transform.position = new Vector3(pos.x, pos.y, pos.z);
-                }
-            }
+            //if (touch.phase == TouchPhase.Moved)
+            //{
+            //    Ray ray = Camera.main.ScreenPointToRay(touch.position);
+            //    RaycastHit hit;
+            //    Debug.Log("Hola");
+            //    if (Physics.Raycast(ray, out hit, 100f))
+            //    {
+            //        transform.position = new Vector3(pos.x, pos.y, pos.z);
+            //    }
+            //}
         }
         if (Input.touchCount ==1)
         {
@@ -80,7 +77,5 @@ public class Pokeball : MonoBehaviour
         rb.AddForce((direction * speed / 2f) + (Vector3.up * speed));
         Debug.Log("Lanzando");
 
-        holding = false;
-        throwing = true;
     }
 }
